@@ -27,6 +27,7 @@ public class PhotosFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     ArrayList<Theme> themeList;
+    GridView gridview;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -81,7 +82,7 @@ public class PhotosFragment extends Fragment {
         themeList.add(new Theme("Poterie", 5, R.drawable.museum_logo));
         themeList.add(new Theme("Outils", 4, R.drawable.museum_logo));
 
-        GridView gridview = (GridView) view.findViewById(R.id.grid);
+        gridview = (GridView) view.findViewById(R.id.grid);
         gridview.setAdapter(new ImageAdapter(getContext(),themeList));
 
         return view;

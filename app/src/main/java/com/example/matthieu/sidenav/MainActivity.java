@@ -30,26 +30,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        themeList = new ArrayList<>();
-//
-//        themeList.add(new Theme("Tableau", 0, R.drawable.museum_logo));
-//        themeList.add(new Theme("Objets", 1, R.drawable.museum_logo));
-//        themeList.add(new Theme("Gravure", 2, R.drawable.museum_logo));
-//        themeList.add(new Theme("Architecture", 3, R.drawable.museum_logo));
-//        themeList.add(new Theme("Poterie", 5, R.drawable.museum_logo));
-//        themeList.add(new Theme("Outils", 4, R.drawable.museum_logo));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -59,10 +41,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-//        GridView gridview = (GridView) findViewById(R.id.grid);
-//        gridview.setAdapter(new ImageAdapter(this,themeList));
 
     }
 
