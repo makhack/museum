@@ -9,15 +9,18 @@ import android.os.Parcelable;
 public class Item implements Parcelable {
     private int image;
     private String description;
+    private String name;
 
-    public Item(int image, String description) {
+    public Item(int image, String description, String name) {
         this.image = image;
         this.description = description;
+        this.name = name;
     }
 
     protected Item(Parcel in) {
         image = in.readInt();
         description = in.readString();
+        name = in.readString();
     }
 
     public int getImage() {
@@ -36,6 +39,14 @@ public class Item implements Parcelable {
         this.description = description;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -45,6 +56,7 @@ public class Item implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(image);
         dest.writeString(description);
+        dest.writeString(name);
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {

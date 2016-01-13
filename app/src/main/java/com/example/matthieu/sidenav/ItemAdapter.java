@@ -3,7 +3,6 @@ package com.example.matthieu.sidenav;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,25 +15,24 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageAdapter extends BaseAdapter {
+public class ItemAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
-    private List<Theme> themeBeanList;
     private Context c;
     private Intent i;
     private List<Item> items;
-    public ImageAdapter(Context c, final List<Theme> themeBeanList) {
+    public ItemAdapter(Context c, final List<Item> items) {
 
         mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.themeBeanList = themeBeanList;
+        this.items = items;
         this.c = c;
     }
 
     public int getCount() {
-        return themeBeanList.size();
+        return items.size();
     }
 
-    public Theme getItem(int position) {
-        return themeBeanList.get(position);
+    public Item getItem(int position) {
+        return items.get(position);
     }
 
     public long getItemId(int position) {
@@ -69,46 +67,24 @@ public class ImageAdapter extends BaseAdapter {
         //-------------------------
 
         //on remplit avec l'objet voulu
-        final Theme themeBean = (Theme) getItem(position);
+        final Item itemBean = (Item) getItem(position);
 
-        viewHolder.ec_tv_name.setText(themeBean.getName());
-        viewHolder.ec_iv.setImageResource(themeBean.getImg());
+        viewHolder.ec_tv_name.setText(itemBean.getName());
+        viewHolder.ec_iv.setImageResource(itemBean.getImage());
 
         rowView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-
-                i = new Intent(c.getApplicationContext(), ItemActivity.class);
-                Theme theme = themeBeanList.get(position);
-                items = theme.getItems();
-                if(items != null) {
-                    Log.v("LONGEUUURR !!!", "longeur : " + String.valueOf(items.size()));
-                    i.putParcelableArrayListExtra("test", (ArrayList<? extends Parcelable>) items);
-                    c.startActivity(i);
-                }else{
-                    Toast.makeText(c,"Aucune images pour cette galerie", Toast.LENGTH_SHORT).show();
-                }
+                i = new Intent(c.getApplicationContext(), TabActivity.class);
+                i.putParcelableArrayListExtra("items", (ArrayList<? extends Parcelable>) items);
+                c.startActivity(i);
             }
         });
 
         return rowView;
     }
-
-//    private Integer[] mThumbIds = {
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo
-//    };
 
     public static class ViewHolder {
 
