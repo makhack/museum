@@ -19,9 +19,9 @@ public class ItemActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle storyTagBundle = getIntent().getExtras();
-        ArrayList<Theme> themes = storyTagBundle.getParcelableArrayList("test");
+        ArrayList<Item> items = storyTagBundle.getParcelableArrayList("test");
         GridView gridview = (GridView) findViewById(R.id.grid);
-//        gridview.setAdapter(new ImageAdapter(this,themeList));
+        gridview.setAdapter(new ItemAdapter(this,items));
 
     }
 
