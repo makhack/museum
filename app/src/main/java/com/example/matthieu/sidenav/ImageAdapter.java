@@ -1,6 +1,8 @@
 package com.example.matthieu.sidenav;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +18,13 @@ import java.util.List;
 public class ImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<Theme> themeBeanList;
-
+    private Context c;
+    private Intent i;
     public ImageAdapter(Context c, final List<Theme> themeBeanList) {
 
         mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.themeBeanList = themeBeanList;
+        this.c = c;
     }
 
     public int getCount() {
@@ -66,6 +71,17 @@ public class ImageAdapter extends BaseAdapter {
 
         viewHolder.ec_tv_name.setText(themeBean.getName());
         viewHolder.ec_iv.setImageResource(themeBean.getImg());
+
+        rowView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                i = new Intent(c.getApplicationContext(), ItemActivity.class);
+                i.putParcelableArrayListExtra("test", (ArrayList<? extends Parcelable>) themeBeanList);
+                c.startActivity(i);
+            }
+        });
 
         return rowView;
     }

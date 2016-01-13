@@ -1,8 +1,11 @@
 package com.example.matthieu.sidenav;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +21,7 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener {
 
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
@@ -27,26 +30,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        themeList = new ArrayList<>();
-
-        themeList.add(new Theme("Tableau", 0, R.drawable.museum_logo));
-        themeList.add(new Theme("Objets", 1, R.drawable.museum_logo));
-        themeList.add(new Theme("Gravure", 2, R.drawable.museum_logo));
-        themeList.add(new Theme("Architecture", 3, R.drawable.museum_logo));
-        themeList.add(new Theme("Poterie", 5, R.drawable.museum_logo));
-        themeList.add(new Theme("Outils", 4, R.drawable.museum_logo));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,9 +41,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        GridView gridview = (GridView) findViewById(R.id.grid);
-        gridview.setAdapter(new ImageAdapter(this,themeList));
 
     }
 
@@ -99,7 +81,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment fragment = null;
 
+        Class fragmentClass;
+        fragmentClass = PhotosFragment.class;
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
@@ -114,9 +99,23 @@ public class MainActivity extends AppCompatActivity
 //        } else if (id == R.id.nav_send) {
 //
 //        }
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
