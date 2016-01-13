@@ -37,40 +37,20 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        TextView textView = new TextView(c);
-        textView.setTextColor(Color.WHITE);
-        textView.setTextSize(30);
-        textView.setTypeface(Typeface.DEFAULT_BOLD);
-        textView.setText(String.valueOf(position));
+    public Object instantiateItem(View collection, int position) {
 
-        ImageView imageView = new ImageView(c);
-        imageView.setImageResource(items.get(position).getImage());
-        LayoutParams imageParams = new LayoutParams(
-                LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-        imageView.setLayoutParams(imageParams);
+        View rowView = mInflater.inflate(R.layout.pager_cellule, null);
 
-        LinearLayout layout = new LinearLayout(c);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        LayoutParams layoutParams = new LayoutParams(
-                LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-        layout.setBackgroundColor(Color.BLACK);
-        layout.setLayoutParams(layoutParams);
-        layout.addView(textView);
-        layout.addView(imageView);
+        TextView tvName = (TextView) rowView.findViewById(R.id.pc_tv_name);
+        ImageView ivImage = (ImageView) rowView.findViewById(R.id.pc_iv_image);
+        TextView tvDescription = (TextView) rowView.findViewById(R.id.pc_tv_description);
 
-        final int page = position;
-        layout.setOnClickListener(new OnClickListener(){
 
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(c,
-                        "Page " + page + " clicked",
-                        Toast.LENGTH_LONG).show();
-            }});
-
-        container.addView(layout);
-        return layout;
+        tvName.setText(items.get(position).getName());
+        ivImage.setImageResource(items.get(position).getImage());
+        tvDescription.setText(items.get(position).getDescription());
+        ((ViewPager) collection).addView(rowView);
+        return rowView;
     }
 
 
@@ -82,65 +62,6 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout)object);
-    }
-
-    public Item getItem(int position) {
-        return items.get(position);
-    }
-
-    public long getItemId(int position) {
-        return position;
-    }
-
-    // create a new ImageView for each item referenced by the Adapter
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
-
-        //---------------------
-        // inflate
-        //-------------------------
-        final ViewHolder viewHolder;
-        if (rowView == null) {
-            //cr�ation
-            rowView = mInflater.inflate(R.layout.pager_cellule, null);
-
-            viewHolder = new ViewHolder();
-            viewHolder.pc_tv_name = (TextView) rowView.findViewById(R.id.pc_tv_name);
-            viewHolder.pc_iv = (ImageView) rowView.findViewById(R.id.pc_iv_image);
-            viewHolder.pc_tv_description = (TextView) rowView.findViewById(R.id.pc_tv_description);
-
-            rowView.setTag(viewHolder);
-        }
-        else {
-            //recyclage
-            viewHolder = (ViewHolder) rowView.getTag();
-        }
-
-        //---------------------
-        // Remplissage
-        //-------------------------
-
-        //on remplit avec l'objet voulu
-        final Item itemBean = (Item) getItem(position);
-
-        viewHolder.pc_tv_name.setText(itemBean.getName());
-        viewHolder.pc_iv.setImageResource(itemBean.getImage());
-        viewHolder.pc_tv_description.setText(itemBean.getDescription());
-
-//        rowView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//                i = new Intent(c.getApplicationContext(), TabActivity.class);
-//                Theme theme = themeBeanList.get(position);
-//                items = theme.getItems();
-//                i.putParcelableArrayListExtra("test", (ArrayList<? extends Parcelable>) items);
-//                c.startActivity(i);
-//            }
-//        });
-
-        return rowView;
     }
 
     public static class ViewHolder {
