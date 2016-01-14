@@ -97,22 +97,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
 
-        Class fragmentClass;
-        fragmentClass = GeoFragment.class;
+        Class fragmentClass = null;
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
 
-//            'drawable://' +R.drawable.museum_logo
-
-//            final BasicImageDownloader downloader = new BasicImageDownloader();
-
-//        } else if (id == R.id.nav_manage) {
-//
-//        }
+        if (id == R.id.nav_camera) {
+            return false;
+        } else if (id == R.id.nav_gallery) {
+            fragmentClass = PhotosFragment.class;
+        } else if (id == R.id.nav_slideshow) {
+            return false;
+        } else if (id == R.id.nav_manage) {
+            fragmentClass = GeoFragment.class;
+        }
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
