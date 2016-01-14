@@ -1,13 +1,19 @@
 package com.example.matthieu.sidenav;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+
 /**
  * Created by matthieu on 12/01/2016.
  */
-public class Theme {
+public class Theme implements Parcelable {
 
     private String name;
     private int img;
     private long id;
+    private ArrayList<Item> items;
 
     public Theme() {
 
@@ -23,6 +29,33 @@ public class Theme {
         this.name = name;
         this.id = id;
         this.img = img;
+    }
+
+    public Theme(final String name, final int id, final int img, ArrayList<Item> items) {
+        super();
+
+        this.name = name;
+        this.id = id;
+        this.img = img;
+        this.items = items;
+    }
+
+    protected Theme(Parcel in) {
+        name = in.readString();
+        img = in.readInt();
+        id = in.readLong();
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
+
+    public void addItem(Item item){
+        this.items.add(item);
     }
 
     public long getId() {
@@ -48,4 +81,28 @@ public class Theme {
     public void setImg(int img) {
         this.img = img;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeInt(img);
+        dest.writeLong(id);
+    }
+
+    public static final Creator<Theme> CREATOR = new Creator<Theme>() {
+        @Override
+        public Theme createFromParcel(Parcel in) {
+            return new Theme(in);
+        }
+
+        @Override
+        public Theme[] newArray(int size) {
+            return new Theme[size];
+        }
+    };
 }

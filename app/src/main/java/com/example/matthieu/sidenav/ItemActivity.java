@@ -6,6 +6,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.GridView;
+
+import java.util.ArrayList;
 
 public class ItemActivity extends AppCompatActivity {
 
@@ -15,15 +18,11 @@ public class ItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Bundle storyTagBundle = getIntent().getExtras();
+        ArrayList<Item> items = storyTagBundle.getParcelableArrayList("test");
+        GridView gridview = (GridView) findViewById(R.id.grid);
+        gridview.setAdapter(new ItemAdapter(this,items));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
 }
