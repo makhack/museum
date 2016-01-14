@@ -20,6 +20,9 @@ public class ItemActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Bundle storyTagBundle = getIntent().getExtras();
         ArrayList<Item> items = storyTagBundle.getParcelableArrayList("test");
+        String themeName = storyTagBundle.getString("name");
+        getSupportActionBar().setTitle(themeName);
+
         GridView gridview = (GridView) findViewById(R.id.grid);
         gridview.setAdapter(new ItemAdapter(this,items));
 
