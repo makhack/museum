@@ -1,8 +1,12 @@
 package com.example.matthieu.sidenav;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +34,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         countPressed = 0;
+        Class fragmentClass;
+        fragmentClass = PhotosFragment.class;
+        Fragment fragment = null;
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -42,6 +51,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
     }
 
     @Override
@@ -97,7 +114,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
 
-        Class fragmentClass = null;
+        Class fragmentClass;
+
+
+        fragmentClass = null;
 
 
         if (id == R.id.nav_camera) {
@@ -105,9 +125,27 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             fragmentClass = PhotosFragment.class;
         } else if (id == R.id.nav_slideshow) {
+            Uri imageUri = Uri.parse("http://museumofindustry.novascotia.ca/sites/default/files/inline/images/le-plan.jpg");
+
+            DownloadManager.Request request = new DownloadManager.Request(imageUri);
+            request.setDescription("Some descrition");
+            request.setTitle("Some title");
+            // in order for this if to run, you must use the android 3.2 to compile your app
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            }
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "name-of-the-file.ext");
+
+            // get download service and enqueue file
+            DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            manager.enqueue(request);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
             return false;
         } else if (id == R.id.nav_manage) {
             fragmentClass = GeoFragment.class;
+
         }
 
         try {
