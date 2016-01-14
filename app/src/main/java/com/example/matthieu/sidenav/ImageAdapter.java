@@ -84,7 +84,6 @@ public class ImageAdapter extends BaseAdapter {
                 Theme theme = themeBeanList.get(position);
                 items = theme.getItems();
                 if(items != null) {
-                    Log.v("LONGEUUURR !!!", "longeur : " + String.valueOf(items.size()));
                     i.putParcelableArrayListExtra("test", (ArrayList<? extends Parcelable>) items);
                     c.startActivity(i);
                 }else{
@@ -95,20 +94,6 @@ public class ImageAdapter extends BaseAdapter {
 
         return rowView;
     }
-
-//    private Integer[] mThumbIds = {
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo,
-//            R.drawable.museum_logo, R.drawable.museum_logo
-//    };
 
     public static class ViewHolder {
 

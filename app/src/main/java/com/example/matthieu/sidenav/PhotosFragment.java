@@ -78,10 +78,10 @@ public class PhotosFragment extends Fragment {
 
         itemsList = new ArrayList<>();
 
-        itemsList.add(new Item(R.drawable.museum_logo, "Super tableau de ouf 1","Tableau 1"));
-        itemsList.add(new Item(R.drawable.museum_logo, "Super tableau de ouf 2","Tableau 2"));
-        itemsList.add(new Item(R.drawable.museum_logo, "Super tableau de ouf 3","Tableau 3"));
-        itemsList.add(new Item(R.drawable.museum_logo, "Super tableau de ouf 4","Tableau 4"));
+        itemsList.add(new Item(R.drawable.tableau1, "Super tableau de ouf 1","Tableau 1"));
+        itemsList.add(new Item(R.drawable.tableau2, "Super tableau de ouf 2","Tableau 2"));
+        itemsList.add(new Item(R.drawable.tableau3, "Super tableau de ouf 3","Tableau 3"));
+        itemsList.add(new Item(R.drawable.tableau4, "Super tableau de ouf 4","Tableau 4"));
 
         themeList.add(new Theme("Tableau", 0, R.drawable.museum_logo,itemsList));
         themeList.add(new Theme("Objets", 1, R.drawable.museum_logo));
