@@ -100,9 +100,32 @@ public class GeoFragment extends Fragment {
 
         googleMap = mMapView.getMap();
         googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.7750, 122.4183))
-                .title("San Francisco")
-                .snippet("Population: 776733"));
+                .position(new LatLng(48.860294, 2.338629))
+                .title("Entrée Musée du Louvre"));
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(48.860294,2.337460))
+                .title("Oeuvre N°1"));
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(48.860050, 2.339550))
+                .title("Oeuvre N°2"));
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(48.85960461831141, 2.338762879371643))
+                .title("Oeuvre N°2"));
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(48.85983049202817, 2.3377329111099243))
+                .title("Oeuvre N°2"));
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(48.86085396953378, 2.3358339071273804))
+                .title("Oeuvre N°2"));
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(48.86116453787939, 2.3379796743392944))
+                .title("Oeuvre N°2"));
 
 
         return v;
