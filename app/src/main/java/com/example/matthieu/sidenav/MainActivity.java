@@ -1,16 +1,11 @@
 package com.example.matthieu.sidenav;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,14 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener,GeoFragment.OnFragmentInteractionListener {
 
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
@@ -104,20 +98,21 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
 
         Class fragmentClass;
-        fragmentClass = PhotosFragment.class;
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        fragmentClass = GeoFragment.class;
 
-        } else if (id == R.id.nav_slideshow) {
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
 
 //            'drawable://' +R.drawable.museum_logo
 
 //            final BasicImageDownloader downloader = new BasicImageDownloader();
 
-        } else if (id == R.id.nav_manage) {
-
-        }
+//        } else if (id == R.id.nav_manage) {
+//
+//        }
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
