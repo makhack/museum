@@ -12,6 +12,8 @@ import android.widget.GridView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
@@ -70,6 +72,7 @@ public class GeoFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
 
     }
@@ -87,17 +90,25 @@ public class GeoFragment extends Fragment {
 
         mMapView.onResume();// needed to get the map to display immediately
 
+
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+
         googleMap = mMapView.getMap();
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.7750, 122.4183))
+                .title("San Francisco")
+                .snippet("Population: 776733"));
 
 
         return v;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -105,6 +116,8 @@ public class GeoFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
+
 
     @Override
     public void onAttach(Context context) {
