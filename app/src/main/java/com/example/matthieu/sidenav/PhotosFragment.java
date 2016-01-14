@@ -78,7 +78,7 @@ public class PhotosFragment extends Fragment {
 
         itemsList = new ArrayList<>();
 
-        itemsList.add(new Item(R.drawable.tableau1, "Super tableau de ouf 1","Tableau 1"));
+        /*itemsList.add(new Item(R.drawable.tableau1, "Super tableau de ouf 1","Tableau 1"));
         itemsList.add(new Item(R.drawable.tableau2, "Super tableau de ouf 2","Tableau 2"));
         itemsList.add(new Item(R.drawable.tableau3, "Super tableau de ouf 3","Tableau 3"));
         itemsList.add(new Item(R.drawable.tableau4, "Super tableau de ouf 4","Tableau 4"));
@@ -88,7 +88,7 @@ public class PhotosFragment extends Fragment {
         themeList.add(new Theme("Gravure", 2, R.drawable.museum_logo));
         themeList.add(new Theme("Architecture", 3, R.drawable.museum_logo));
         themeList.add(new Theme("Poterie", 5, R.drawable.museum_logo));
-        themeList.add(new Theme("Outils", 4, R.drawable.museum_logo));
+        themeList.add(new Theme("Outils", 4, R.drawable.museum_logo));*/
 
         gridview = (GridView) view.findViewById(R.id.grid);
         gridview.setAdapter(new ImageAdapter(getContext(),themeList));

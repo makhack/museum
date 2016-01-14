@@ -1,5 +1,9 @@
 package com.example.matthieu.sidenav;
 
+
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
@@ -33,6 +37,37 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // TEST DB
+        // On créé une instance de BaseDAO qui va gérer la DB et la créé si il faut etc
+        BaseDAO sqlInstance = new BaseDAO(getApplicationContext());
+
+        // On ouvre la connexion à la bdd
+        SQLiteDatabase db = sqlInstance.open();
+
+        // on créé une instance d'ItemDAO si on veut gérer des items (add/delete/edit/select/selectAll...)
+        // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
+        ItemDAO idao = new ItemDAO(getApplicationContext(), db);
+        ThemeDAO tdao = new ThemeDAO(getApplicationContext(), db);
+
+        Theme t = new Theme("Tableau", 1, R.drawable.tableau1, "Tout les tableau rien que pour vous");
+
+        // on créé un item
+        Item i = new Item(R.drawable.tableau1, "description item", "name item", 114.2, 47.5, 1);
+        Item it = new Item(R.drawable.tableau2, "description item", "name item", 114.2, 47.5, 1);
+        Item ite = new Item(R.drawable.tableau3, "description item", "name item", 114.2, 47.5, 1);
+        Item item = new Item(R.drawable.tableau4, "description item", "name item", 114.2, 47.5, 1);
+
+        // on l'ajoute à la BDD via l'ItemDAO
+        idao.add(i);
+
+        // on sélectionne l'item avec l'id = 1 (celui qu'on vient d'ajouter)
+        // via la methode select de l'ItemDAO
+        Item iFromDb = idao.select(1);
+
+        Toast.makeText(getApplicationContext(),iFromDb.getDescription() + iFromDb.getName() + iFromDb.get_latitude() + iFromDb.get_longitude(),Toast.LENGTH_LONG).show();
+        // FIN TEST DB
+
         countPressed = 0;
         Class fragmentClass;
         fragmentClass = PhotosFragment.class;
