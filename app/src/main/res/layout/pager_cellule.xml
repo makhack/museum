@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,19 +14,34 @@
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="520dp"
-            android:layout_marginTop="-15dp" />
+            android:layout_marginTop="-15dp"/>
 
-        <TextView
-            android:id="@+id/pc_tv_name"
-            android:layout_gravity="center"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="15dp"
-            android:layout_marginTop="-50dp"
-            android:text="TextView"
-            android:background="#90000000"
-            android:textColor="#ffffff"
-            android:gravity="center" />
+            android:layout_marginTop="-50dp">
+
+            <TextView
+                android:id="@+id/pc_tv_name"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="15dp"
+                android:text="TextView"
+                android:background="#90000000"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:layout_weight="0.8"/>
+
+            <ImageButton
+                android:id="@+id/pc_ib_like"
+                android:layout_width="58dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/favoriteno"
+                android:background="#90000000"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/pc_tv_description"
@@ -36,7 +52,7 @@
             android:paddingBottom="150dp"
             android:textSize="15dp"
             android:text="TextView"
-            android:gravity="center" />
+            android:gravity="center"/>
 
     </LinearLayout>
 </ScrollView>

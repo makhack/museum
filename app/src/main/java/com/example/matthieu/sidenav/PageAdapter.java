@@ -2,22 +2,15 @@ package com.example.matthieu.sidenav;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Bundle;
+
 import java.util.List;
 
 public class PageAdapter extends android.support.v4.view.PagerAdapter {
@@ -25,6 +18,7 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
     private Context c;
     private Intent i;
     private List<Item> items;
+
     public PageAdapter(Context c, final List<Item> items) {
 
         mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,7 +39,14 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
         TextView tvName = (TextView) rowView.findViewById(R.id.pc_tv_name);
         ImageView ivImage = (ImageView) rowView.findViewById(R.id.pc_iv_image);
         TextView tvDescription = (TextView) rowView.findViewById(R.id.pc_tv_description);
+        ImageButton ibLike = (ImageButton) rowView.findViewById(R.id.pc_ib_like);
 
+        ibLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         tvName.setText(items.get(position).getName());
         ivImage.setBackgroundResource(items.get(position).getImage());
@@ -54,7 +55,6 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
         return rowView;
     }
 
-
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
@@ -62,7 +62,7 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((ScrollView)object);
+        container.removeView((ScrollView) object);
     }
 
     public static class ViewHolder {
