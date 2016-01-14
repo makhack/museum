@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
@@ -47,7 +48,7 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
 
 
         tvName.setText(items.get(position).getName());
-        ivImage.setImageResource(items.get(position).getImage());
+        ivImage.setBackgroundResource(items.get(position).getImage());
         tvDescription.setText(items.get(position).getDescription());
         ((ViewPager) collection).addView(rowView);
         return rowView;
@@ -61,7 +62,7 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout)object);
+        container.removeView((ScrollView)object);
     }
 
     public static class ViewHolder {

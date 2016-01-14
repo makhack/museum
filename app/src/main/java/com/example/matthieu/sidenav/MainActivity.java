@@ -1,5 +1,6 @@
 package com.example.matthieu.sidenav;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if(countPressed == 0){
-                Toast.makeText(getApplicationContext(),"Appuyez a nouveau sur le bouton retour pour quitter",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Retour pour quitter",Toast.LENGTH_LONG).show();
                 countPressed = 1;
                 new CountDownTimer(4000, 1000) {
 
@@ -109,6 +110,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
+
+//            'drawable://' +R.drawable.museum_logo
+
+//            final BasicImageDownloader downloader = new BasicImageDownloader();
 
         } else if (id == R.id.nav_manage) {
 
