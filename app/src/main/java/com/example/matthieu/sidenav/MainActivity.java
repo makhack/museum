@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity
         // On ouvre la connexion à la bdd
         SQLiteDatabase db = sqlInstance.open();
 
-
-
         // on créé une instance d'ItemDAO si on veut gérer des items (add/delete/edit/select/selectAll...)
         // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
         idao = new ItemDAO(getApplicationContext(), db);
@@ -57,9 +55,6 @@ public class MainActivity extends AppCompatActivity
             idao.delete(item.get_item_id());
         }
 
-
-
-
         Theme t = new Theme("Tableau", R.drawable.tableau1, "Tout les tableau rien que pour vous");
         Theme theme1 = new Theme("Sculture", R.drawable.sculpture_bronze_art_deco, "Tout les tableau rien que pour vous");
 
@@ -68,10 +63,10 @@ public class MainActivity extends AppCompatActivity
 
         for (Theme theme : tdao.selectAll()) {
 
-            Item i = new Item(R.drawable.tableau1, "Super tableau 1", "Tableau 1", 48.860294, 2.337460, theme.getId());
-            Item it = new Item(R.drawable.tableau2, "Super tableau 2", "Tableau 2", 48.860050, 2.339550, theme.getId());
-            Item ite = new Item(R.drawable.tableau3, "Super tableau 3", "Tableau 3", 48.85960461831141, 2.338762879371643, theme.getId());
-            Item item = new Item(R.drawable.tableau4, "Super tableau 3", "Tableau 4", 48.86116453787939, 2.3379796743392944, theme.getId());
+            Item i = new Item(R.drawable.tableau1, "Super tableau 1", "Tableau 1", 114.2, 47.5, theme.getId());
+            Item it = new Item(R.drawable.tableau2, "Super tableau 2", "Tableau 2", 114.2, 47.5, theme.getId());
+            Item ite = new Item(R.drawable.tableau3, "Super tableau 3", "Tableau 3", 114.2, 47.5, theme.getId());
+            Item item = new Item(R.drawable.tableau4, "Super tableau 3", "Tableau 4", 114.2, 47.5, theme.getId());
 
             idao.add(i);
             idao.add(it);
@@ -79,7 +74,6 @@ public class MainActivity extends AppCompatActivity
             idao.add(item);
             break;
         }
-
 
         db.close();
 
