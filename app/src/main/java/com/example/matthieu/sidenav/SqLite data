@@ -1,0 +1,16 @@
+Theme t = new Theme("Tableau", 1, R.drawable.tableau1, "Tout les tableau rien que pour vous");
+Theme theme1 = new Theme("Sculture", 2, R.drawable.sculpture_bronze_art_deco, "Tout les tableau rien que pour vous");
+
+// on créé un item
+Item i = new Item(R.drawable.tableau1, "Super tableau 1", "Tableau 1", 114.2, 47.5, 1);
+Item it = new Item(R.drawable.tableau2, "Super tableau 2", "Tableau 2", 114.2, 47.5, 1);
+Item ite = new Item(R.drawable.tableau3, "Super tableau 3", "Tableau 3", 114.2, 47.5, 1);
+Item item = new Item(R.drawable.tableau4, "Super tableau 3", "Tableau 4", 114.2, 47.5, 1);
+
+tdao.add(t);
+tdao.add(theme1);
+// on l'ajoute à la BDD via l'ItemDAO
+idao.add(i);
+idao.add(it);
+idao.add(ite);
+idao.add(item);

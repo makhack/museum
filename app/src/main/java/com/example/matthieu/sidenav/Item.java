@@ -40,7 +40,7 @@ public class Item implements Parcelable {
         _image = in.readInt();
         _description = in.readString();
         _name = in.readString();
-        _theme_id = in.readInt();
+        _theme_id = in.readLong();
         _longitude = in.readDouble();
         _latitude = in.readDouble();
     }

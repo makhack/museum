@@ -1,11 +1,8 @@
 package com.example.matthieu.sidenav;
 
-
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,12 +24,13 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener,GeoFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener, GeoFragment.OnFragmentInteractionListener {
 
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
-
+    ItemDAO idao;
     private int countPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +47,14 @@ public class MainActivity extends AppCompatActivity
 
         // on créé une instance d'ItemDAO si on veut gérer des items (add/delete/edit/select/selectAll...)
         // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
-        ItemDAO idao = new ItemDAO(getApplicationContext(), db);
+        idao = new ItemDAO(getApplicationContext(), db);
         ThemeDAO tdao = new ThemeDAO(getApplicationContext(), db);
 
         for (Theme theme : tdao.selectAll()) {
             tdao.delete(theme.getId());
         }
         for (Item item : idao.selectAll()) {
-            tdao.delete(item.get_item_id());
+            idao.delete(item.get_item_id());
         }
 
 
@@ -82,13 +80,13 @@ public class MainActivity extends AppCompatActivity
             break;
         }
 
+
         db.close();
 
         countPressed = 0;
         Class fragmentClass;
         fragmentClass = PhotosFragment.class;
         Fragment fragment = null;
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,7 +102,8 @@ public class MainActivity extends AppCompatActivity
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -117,9 +116,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            if(countPressed == 0){
-                Toast.makeText(getApplicationContext(),"Retour pour quitter",Toast.LENGTH_LONG).show();
+        }
+        else {
+            if (countPressed == 0) {
+                Toast.makeText(getApplicationContext(), "Retour pour quitter", Toast.LENGTH_LONG).show();
                 countPressed = 1;
                 new CountDownTimer(4000, 1000) {
 
@@ -130,7 +130,8 @@ public class MainActivity extends AppCompatActivity
                         countPressed = 0;
                     }
                 }.start();
-            }else if(countPressed == 1){
+            }
+            else if (countPressed == 1) {
                 super.onBackPressed();
             }
         }
@@ -167,15 +168,15 @@ public class MainActivity extends AppCompatActivity
 
         Class fragmentClass;
 
-
         fragmentClass = null;
-
 
         if (id == R.id.nav_camera) {
             return false;
-        } else if (id == R.id.nav_gallery) {
+        }
+        else if (id == R.id.nav_gallery) {
             fragmentClass = PhotosFragment.class;
-        } else if (id == R.id.nav_slideshow) {
+        }
+        else if (id == R.id.nav_slideshow) {
             Uri imageUri = Uri.parse("http://museumofindustry.novascotia.ca/sites/default/files/inline/images/le-plan.jpg");
 
             DownloadManager.Request request = new DownloadManager.Request(imageUri);
@@ -194,14 +195,15 @@ public class MainActivity extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return false;
-        } else if (id == R.id.nav_manage) {
+        }
+        else if (id == R.id.nav_manage) {
             fragmentClass = GeoFragment.class;
-
         }
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
