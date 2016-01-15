@@ -4,13 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 /**
  * Created by Amine on 14-Jan-16.
  */
-public class ItemDAO extends BaseDAO{
+public class ItemDAO extends BaseDAO {
     public static final String ITEM_KEY = "item_id";
     public static final String ITEM_NAME = "name";
     public static final String ITEM_THEME_ID = "theme_id";
@@ -46,7 +47,7 @@ public class ItemDAO extends BaseDAO{
         value.put(ItemDAO.ITEM_IMG, i.getImage());
         value.put(ItemDAO.ITEM_LATITUDE, i.get_latitude());
         value.put(ItemDAO.ITEM_LONGITUDE, i.get_longitude());
-        value.put(ItemDAO.ITEM_THEME_ID, i.get_item_id());
+        value.put(ItemDAO.ITEM_THEME_ID, i.get_theme_id());
         mDB.insert(ItemDAO.ITEM_TABLE_NAME, null, value);
     }
 
@@ -78,8 +79,7 @@ public class ItemDAO extends BaseDAO{
                         + ITEM_KEY + " = ?", new String[]{String.valueOf(id)});
 
         Item i = null;
-        if (c != null)
-        {
+        if (c != null) {
             while (c.moveToNext()) {
                 i = new Item(c.getInt(3), c.getString(4), c.getString(1), c.getDouble(5), c.getDouble(6), c.getLong(2), c.getLong(0));
                 break;
@@ -105,10 +105,47 @@ public class ItemDAO extends BaseDAO{
                         + ITEM_TABLE_NAME, null);
 
         ArrayList<Item> itemlist = null;
-        if (c != null)
-        {
+        if (c != null) {
             while (c.moveToNext()) {
-                if (itemlist == null) { itemlist = new ArrayList<>(); }
+                if (itemlist == null) {
+                    itemlist = new ArrayList<>();
+                }
+
+                Item i = new Item(c.getInt(3), c.getString(4), c.getString(1), c.getDouble(5), c.getDouble(6), c.getLong(2), c.getLong(0));
+                itemlist.add(i);
+            }
+            c.close();
+        }
+
+        if (itemlist == null) {
+            return null;
+        }
+
+        return itemlist;
+    }
+
+    public ArrayList<Item> selectAllItemsByThemeId(long id) {
+        Cursor c = mDB.rawQuery(
+                "Select " + ITEM_KEY + ", "
+                        + ITEM_NAME + ", "
+                        + ITEM_THEME_ID + ", "
+                        + ITEM_IMG + ", "
+                        + ITEM_DESCRIPTION + ", "
+                        + ITEM_LATITUDE + ", "
+                        + ITEM_LONGITUDE + " from "
+                        + ITEM_TABLE_NAME + " where "
+                        + ITEM_THEME_ID + " = ?", new String[]{String.valueOf(id)});
+
+        if (c.getCount() <= 0) {
+            Log.v("ALERT", "ALERT");
+        }
+
+        ArrayList<Item> itemlist = null;
+        if (c != null) {
+            while (c.moveToNext()) {
+                if (itemlist == null) {
+                    itemlist = new ArrayList<>();
+                }
 
                 Item i = new Item(c.getInt(3), c.getString(4), c.getString(1), c.getDouble(5), c.getDouble(6), c.getLong(2), c.getLong(0));
                 itemlist.add(i);

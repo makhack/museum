@@ -17,7 +17,7 @@ public class Item implements Parcelable {
     private double _latitude;
     private double _longitude;
 
-    public Item(int image, String description, String name, double latitude, double longitude, int theme_id) {
+    public Item(int image, String description, String name, double latitude, double longitude, long theme_id) {
         this._image = image;
         this._description = description;
         this._name = name;
@@ -40,7 +40,7 @@ public class Item implements Parcelable {
         _image = in.readInt();
         _description = in.readString();
         _name = in.readString();
-        _theme_id = in.readInt();
+        _theme_id = in.readLong();
         _longitude = in.readDouble();
         _latitude = in.readDouble();
     }
