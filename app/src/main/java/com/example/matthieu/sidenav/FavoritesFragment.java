@@ -1,12 +1,16 @@
 package com.example.matthieu.sidenav;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,7 +67,33 @@ public class FavoritesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites, container, false);
+
+        View v =  inflater.inflate(R.layout.fragment_favorites, container, false);
+        GridView gv = (GridView) v.findViewById(R.id.grid);
+
+        BaseDAO sqlite = new BaseDAO(getContext());
+        SQLiteDatabase db = sqlite.open();
+        FavoritesDAO fdao = new FavoritesDAO(getContext(), db);
+        ItemDAO idao = new ItemDAO(getContext(), db);
+
+        ArrayList<Favorites> favlist = fdao.selectAll();
+        ArrayList<Item> itemlist = new ArrayList<>();
+        if(favlist != null){
+            if (favlist.size() > 0)
+            {
+                for (Favorites favorites : favlist) {
+                    long favitem_id = favorites.getItem_id();
+                    Item i = idao.select(favitem_id);
+                    itemlist.add(i);
+                }
+                gv.setAdapter(new FavoriesAdapter(getContext(), itemlist));
+            }
+        }
+
+
+
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
