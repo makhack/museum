@@ -1,6 +1,7 @@
 package com.example.matthieu.sidenav;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import java.util.ArrayList;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +27,7 @@ public class PhotosFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     ArrayList<Theme> themeList;
-    ArrayList<Item> itemsList;
+
     GridView gridview;
 
     // TODO: Rename and change types of parameters
@@ -65,33 +65,55 @@ public class PhotosFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_photos, container, false);
+        View view = inflater.inflate(R.layout.fragment_photos, container, false);
 
         themeList = new ArrayList<>();
 
-        itemsList = new ArrayList<>();
+        BaseDAO sqlInstance = new BaseDAO(getContext());
 
-        itemsList.add(new Item(R.drawable.tableau1, "Super tableau de ouf 1","Tableau 1"));
-        itemsList.add(new Item(R.drawable.tableau2, "Super tableau de ouf 2","Tableau 2"));
-        itemsList.add(new Item(R.drawable.tableau3, "Super tableau de ouf 3","Tableau 3"));
-        itemsList.add(new Item(R.drawable.tableau4, "Super tableau de ouf 4","Tableau 4"));
+        // On ouvre la connexion à la bdd
+        SQLiteDatabase db = sqlInstance.open();
 
-        themeList.add(new Theme("Tableau", 0, R.drawable.museum_logo,itemsList));
-        themeList.add(new Theme("Objets", 1, R.drawable.museum_logo));
-        themeList.add(new Theme("Gravure", 2, R.drawable.museum_logo));
-        themeList.add(new Theme("Architecture", 3, R.drawable.museum_logo));
-        themeList.add(new Theme("Poterie", 5, R.drawable.museum_logo));
-        themeList.add(new Theme("Outils", 4, R.drawable.museum_logo));
+        ItemDAO idao = new ItemDAO(getContext(), db);
+        ThemeDAO tdao = new ThemeDAO(getContext(), db);
+        ArrayList<Item> items = new ArrayList<>();
+        items = idao.selectAll();
+
+        ArrayList<Item> itemsList;
+
+        for (Item item : items) {
+            Theme t = tdao.select(item.get_theme_id());
+
+            if (themeList.size() > 0) {
+                boolean found = false;
+                for (Theme theme : themeList) {
+                    if (t.getId() == theme.getId()) {
+                        found = true;
+                        theme.getItems().add(item);
+                        break;
+                    }
+                }
+                if (!found) {
+                    t.getItems().add(item);
+                    themeList.add(t);
+                }
+            }
+            else {
+                t.getItems().add(item);
+                themeList.add(t);
+            }
+        }
+
+        db.close();
 
         gridview = (GridView) view.findViewById(R.id.grid);
-        gridview.setAdapter(new ImageAdapter(getContext(),themeList));
+        gridview.setAdapter(new ImageAdapter(getContext(), themeList));
 
         return view;
     }
@@ -108,7 +130,8 @@ public class PhotosFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
+        }
+        else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
