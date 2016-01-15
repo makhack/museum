@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
 
         if (fdao.selectAll() != null) {
             for (Favorites fav : fdao.selectAll()) {
-                fdao.delete(fav.getId());
+                fdao.deleteFav(fav.getId());
             }
         }
 

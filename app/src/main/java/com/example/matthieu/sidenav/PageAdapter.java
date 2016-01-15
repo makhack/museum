@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -60,10 +61,12 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
 
                 if (favInDb != null) {
                     fdao.delete(item_id);
+                    Toast.makeText(c,"L'oeuvre " + itemdb.getName() + " a bien été retiré des favoris", Toast.LENGTH_LONG ).show();
                 }
                 else {
                     Favorites f = new Favorites(item_id);
                     fdao.add(f);
+                    Toast.makeText(c, "L'oeuvre " + itemdb.getName() + " a bien été ajouté aux favoris", Toast.LENGTH_LONG).show();
                 }
             }
         });
