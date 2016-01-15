@@ -2,7 +2,9 @@ package com.example.matthieu.sidenav;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -113,7 +115,17 @@ public class GeoFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_geo, container, false);
 
+        // TEST DB
+        // On créé une instance de BaseDAO qui va gérer la DB et la créé si il faut etc
+        BaseDAO sqlInstance = new BaseDAO(getContext());
+
+        // On ouvre la connexion à la bdd
+        SQLiteDatabase db = sqlInstance.open();
         //view.findViewById(R.id.map);
+        ItemDAO idao = new ItemDAO(getContext(), db);
+
+
+
 
         mMapView = (MapView) v.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
@@ -135,27 +147,53 @@ public class GeoFragment extends android.support.v4.app.Fragment {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(48.860294,2.338629)) // Position que l'on veut atteindre
                 .zoom(18)             // Niveau de zoom
-                .bearing(180)         // Orientation de la caméra, ici au sud
+                .bearing(180)         // Orientation de la caméra
                 .tilt(30)               // Inclinaison de la caméra
 
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+        for (Item item : idao.selectAll()) {
 
 
+            googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(item.get_latitude(), item.get_longitude()))
+                            .title(item.getName())
+                            .snippet(item.getDescription())
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                         // .icon(BitmapFactory.decodeResource(getContext().getResources(),item.getImage()))
+                            .anchor(0.5f, 0.5f)
+
+            );
+            googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(48.860294, 2.338629))
+                            .title("Cour Carrée")
+            );
+
+            googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(48.86085396953378, 2.3358339071273804))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.louvre))
+                            .title("Entrée Musée du Louvre")
+                            .anchor(1f, 1f)
+            );
+        }
+
+
+
+
+
+        /*
         googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(48.860294, 2.338629))
-                .title("Cour Carrée")
-                );
+                            .position(new LatLng(48.860294, 2.337460))
+                            .title(item.getName())
+                            .snippet(item.getDescription())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.tableau1a1))
+                            .anchor(0.5f,0.5f)
 
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(48.860294, 2.337460))
-                .title("Oeuvre N°1")
-                .snippet("Portrait de Mona Lisa, est un tableau de l'artiste italien Léonard de Vinci")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.tableau1a1))
-                .anchor(0.5f,0.5f)
 
-        );
+
+
+
 
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(48.860050, 2.339550))
@@ -190,7 +228,7 @@ public class GeoFragment extends android.support.v4.app.Fragment {
                 .title("Oeuvre N°5")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.tableau5a1))
                 .anchor(1f, 1f)
-        );
+        );*/
 
 
         return mMapView;
