@@ -82,8 +82,10 @@ public class ImageAdapter extends BaseAdapter {
 
                 i = new Intent(c.getApplicationContext(), ItemActivity.class);
                 Theme theme = themeBeanList.get(position);
+                String themeName = themeBeanList.get(position).getName();
                 items = theme.getItems();
                 if(items != null) {
+                    i.putExtra("name",themeName);
                     i.putParcelableArrayListExtra("test", (ArrayList<? extends Parcelable>) items);
                     c.startActivity(i);
                 }else{

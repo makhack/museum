@@ -1,34 +1,26 @@
 package com.example.matthieu.sidenav;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PhotosFragment.OnFragmentInteractionListener} interface
+ * {@link FavoritesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PhotosFragment#newInstance} factory method to
+ * Use the {@link FavoritesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PhotosFragment extends Fragment {
+public class FavoritesFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    ArrayList<Theme> themeList;
-
-    GridView gridview;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -36,26 +28,26 @@ public class PhotosFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public PhotosFragment() {
-        // Required empty public constructor
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PhotosFragment.
+     * @return A new instance of fragment FavoritesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PhotosFragment newInstance(String param1, String param2) {
-        PhotosFragment fragment = new PhotosFragment();
+    public static FavoritesFragment newInstance(String param1, String param2) {
+        FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public FavoritesFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -71,51 +63,7 @@ public class PhotosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_photos, container, false);
-
-        themeList = new ArrayList<>();
-
-        BaseDAO sqlInstance = new BaseDAO(getContext());
-
-        // On ouvre la connexion à la bdd
-        SQLiteDatabase db = sqlInstance.open();
-
-        ItemDAO idao = new ItemDAO(getContext(), db);
-        ThemeDAO tdao = new ThemeDAO(getContext(), db);
-        ArrayList<Item> items = new ArrayList<>();
-        items = idao.selectAll();
-
-        ArrayList<Item> itemsList;
-
-        for (Item item : items) {
-            Theme t = tdao.select(item.get_theme_id());
-
-            if (themeList.size() > 0) {
-                boolean found = false;
-                for (Theme theme : themeList) {
-                    if (t.getId() == theme.getId()) {
-                        found = true;
-                        theme.getItems().add(item);
-                        break;
-                    }
-                }
-                if (!found) {
-                    t.getItems().add(item);
-                    themeList.add(t);
-                }
-            }
-            else {
-                t.getItems().add(item);
-                themeList.add(t);
-            }
-        }
-
-        db.close();
-
-        gridview = (GridView) view.findViewById(R.id.grid);
-        gridview.setAdapter(new ImageAdapter(getContext(), themeList));
-
-        return view;
+        return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

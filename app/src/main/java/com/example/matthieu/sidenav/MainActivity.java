@@ -1,16 +1,16 @@
 package com.example.matthieu.sidenav;
 
-import android.graphics.Bitmap;
+import android.app.DownloadManager;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Environment;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,24 +18,70 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener, GeoFragment.OnFragmentInteractionListener {
 
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
-
+    ItemDAO idao;
     private int countPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // TEST DB
+        // On créé une instance de BaseDAO qui va gérer la DB et la créé si il faut etc
+        BaseDAO sqlInstance = new BaseDAO(getApplicationContext());
+
+        // On ouvre la connexion à la bdd
+        SQLiteDatabase db = sqlInstance.open();
+
+        // on créé une instance d'ItemDAO si on veut gérer des items (add/delete/edit/select/selectAll...)
+        // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
+        idao = new ItemDAO(getApplicationContext(), db);
+        ThemeDAO tdao = new ThemeDAO(getApplicationContext(), db);
+
+        for (Theme theme : tdao.selectAll()) {
+            tdao.delete(theme.getId());
+        }
+        for (Item item : idao.selectAll()) {
+            idao.delete(item.get_item_id());
+        }
+
+        Theme t = new Theme("Tableau", R.drawable.tableau1, "Tout les tableau rien que pour vous");
+        Theme theme1 = new Theme("Sculture", R.drawable.sculpture_bronze_art_deco, "Tout les tableau rien que pour vous");
+
+        tdao.add(t);
+        tdao.add(theme1);
+
+        for (Theme theme : tdao.selectAll()) {
+
+            Item i = new Item(R.drawable.tableau1, "Super tableau 1", "Tableau 1", 114.2, 47.5, theme.getId());
+            Item it = new Item(R.drawable.tableau2, "Super tableau 2", "Tableau 2", 114.2, 47.5, theme.getId());
+            Item ite = new Item(R.drawable.tableau3, "Super tableau 3", "Tableau 3", 114.2, 47.5, theme.getId());
+            Item item = new Item(R.drawable.tableau4, "Super tableau 3", "Tableau 4", 114.2, 47.5, theme.getId());
+
+            idao.add(i);
+            idao.add(it);
+            idao.add(ite);
+            idao.add(item);
+            break;
+        }
+
+        db.close();
+
         countPressed = 0;
+        Class fragmentClass;
+        fragmentClass = PhotosFragment.class;
+        Fragment fragment = null;
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -48,6 +94,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
     }
 
     @Override
@@ -55,9 +110,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            if(countPressed == 0){
-                Toast.makeText(getApplicationContext(),"Retour pour quitter",Toast.LENGTH_LONG).show();
+        }
+        else {
+            if (countPressed == 0) {
+                Toast.makeText(getApplicationContext(), "Retour pour quitter", Toast.LENGTH_LONG).show();
                 countPressed = 1;
                 new CountDownTimer(4000, 1000) {
 
@@ -68,7 +124,8 @@ public class MainActivity extends AppCompatActivity
                         countPressed = 0;
                     }
                 }.start();
-            }else if(countPressed == 1){
+            }
+            else if (countPressed == 1) {
                 super.onBackPressed();
             }
         }
@@ -104,24 +161,43 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
 
         Class fragmentClass;
-        fragmentClass = PhotosFragment.class;
+
+        fragmentClass = null;
+
         if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            return false;
+        }
+        else if (id == R.id.nav_gallery) {
+            fragmentClass = PhotosFragment.class;
+        }
+        else if (id == R.id.nav_slideshow) {
+            Uri imageUri = Uri.parse("http://museumofindustry.novascotia.ca/sites/default/files/inline/images/le-plan.jpg");
 
-        } else if (id == R.id.nav_slideshow) {
+            DownloadManager.Request request = new DownloadManager.Request(imageUri);
+            request.setDescription("Some descrition");
+            request.setTitle("Some title");
+            // in order for this if to run, you must use the android 3.2 to compile your app
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            }
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "name-of-the-file.ext");
 
-//            'drawable://' +R.drawable.museum_logo
-
-//            final BasicImageDownloader downloader = new BasicImageDownloader();
-
-        } else if (id == R.id.nav_manage) {
-
+            // get download service and enqueue file
+            DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            manager.enqueue(request);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return false;
+        }
+        else if (id == R.id.nav_manage) {
+            fragmentClass = GeoFragment.class;
         }
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 

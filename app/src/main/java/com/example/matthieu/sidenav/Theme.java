@@ -13,7 +13,8 @@ public class Theme implements Parcelable {
     private String name;
     private int img;
     private long id;
-    private ArrayList<Item> items;
+    private ArrayList<Item> items = new ArrayList<>();
+    private String description;
 
     public Theme() {
 
@@ -23,27 +24,38 @@ public class Theme implements Parcelable {
         this.id = id;
     }
 
-    public Theme(final String name, final int id, final int img) {
+    public Theme(final String name, final long id, final int img, final String desc) {
         super();
 
         this.name = name;
         this.id = id;
         this.img = img;
+        this.description = desc;
     }
 
-    public Theme(final String name, final int id, final int img, ArrayList<Item> items) {
+    public Theme(final String name, final int img, final String desc) {
+        super();
+
+        this.name = name;
+        this.img = img;
+        this.description = desc;
+    }
+
+    public Theme(final String name, final long id, final int img, ArrayList<Item> items, final String desc) {
         super();
 
         this.name = name;
         this.id = id;
         this.img = img;
         this.items = items;
+        this.description = desc;
     }
 
     protected Theme(Parcel in) {
         name = in.readString();
         img = in.readInt();
         id = in.readLong();
+        description = in.readString();
     }
 
     public ArrayList<Item> getItems() {
@@ -54,7 +66,7 @@ public class Theme implements Parcelable {
         this.items = items;
     }
 
-    public void addItem(Item item){
+    public void addItem(Item item) {
         this.items.add(item);
     }
 
@@ -80,6 +92,14 @@ public class Theme implements Parcelable {
 
     public void setImg(int img) {
         this.img = img;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

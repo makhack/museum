@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <ImageView
         android:id="@+id/tc_iv_image"
@@ -10,7 +10,7 @@
         android:layout_width="180dp"
         android:layout_height="180dp"
         android:layout_marginTop="-20dp"
-        android:src="@drawable/museum_logo" />
+        android:src="@drawable/museum_logo"/>
 
     <TextView
         android:id="@+id/tc_tv_name"
@@ -18,10 +18,11 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:layout_marginTop="-28dp"
+        android:layout_marginTop="-22dp"
         android:text="TextView"
         android:background="#90000000"
         android:textColor="#ffffff"
-        android:gravity="center" />
+        android:gravity="center"/>
+
 
 </LinearLayout>
