@@ -24,11 +24,13 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener, GeoFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener, GeoFragment.OnFragmentInteractionListener,FavoritesFragment.OnFragmentInteractionListener {
 
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
     ItemDAO idao;
+    ThemeDAO tdao;
+    FavoritesDAO fdao;
     private int countPressed;
 
     @Override
@@ -46,13 +48,24 @@ public class MainActivity extends AppCompatActivity
         // on créé une instance d'ItemDAO si on veut gérer des items (add/delete/edit/select/selectAll...)
         // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
         idao = new ItemDAO(getApplicationContext(), db);
-        ThemeDAO tdao = new ThemeDAO(getApplicationContext(), db);
+        tdao = new ThemeDAO(getApplicationContext(), db);
+        fdao = new FavoritesDAO(getApplicationContext(), db);
 
-        for (Theme theme : tdao.selectAll()) {
-            tdao.delete(theme.getId());
+        if (tdao.selectAll() != null) {
+            for (Theme theme : tdao.selectAll()) {
+                tdao.delete(theme.getId());
+            }
         }
-        for (Item item : idao.selectAll()) {
-            idao.delete(item.get_item_id());
+        if (idao.selectAll() != null) {
+            for (Item item : idao.selectAll()) {
+                idao.delete(item.get_item_id());
+            }
+        }
+
+        if (fdao.selectAll() != null) {
+            for (Favorites fav : fdao.selectAll()) {
+                fdao.deleteFav(fav.getId());
+            }
         }
 
         Theme t = new Theme("Tableau", R.drawable.tableau1, "Tout les tableau rien que pour vous");
@@ -165,7 +178,7 @@ public class MainActivity extends AppCompatActivity
         fragmentClass = null;
 
         if (id == R.id.nav_camera) {
-            return false;
+            fragmentClass = FavoritesFragment.class;
         }
         else if (id == R.id.nav_gallery) {
             fragmentClass = PhotosFragment.class;

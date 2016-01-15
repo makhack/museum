@@ -14,6 +14,12 @@ public class Favorites {
         this.item_id = item_id;
     }
 
+    public Favorites(long item_id)
+    {
+        super();
+        this.item_id = item_id;
+    }
+
     public long getId() {
         return id;
     }
