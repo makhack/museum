@@ -13,7 +13,7 @@ public class Theme implements Parcelable {
     private String name;
     private int img;
     private long id;
-    private ArrayList<Item> items;
+    private ArrayList<Item> items = new ArrayList<>();
     private String description;
 
     public Theme() {
@@ -66,7 +66,7 @@ public class Theme implements Parcelable {
         this.items = items;
     }
 
-    public void addItem(Item item){
+    public void addItem(Item item) {
         this.items.add(item);
     }
 
