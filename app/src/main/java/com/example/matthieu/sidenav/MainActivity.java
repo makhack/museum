@@ -24,12 +24,13 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener, GeoFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener, GeoFragment.OnFragmentInteractionListener,FavoritesFragment.OnFragmentInteractionListener {
 
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
     ItemDAO idao;
     ThemeDAO tdao;
+    FavoritesDAO fdao;
     private int countPressed;
 
     @Override
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
         idao = new ItemDAO(getApplicationContext(), db);
         tdao = new ThemeDAO(getApplicationContext(), db);
+        fdao = new FavoritesDAO(getApplicationContext(), db);
 
         if (tdao.selectAll() != null) {
             for (Theme theme : tdao.selectAll()) {
@@ -57,6 +59,12 @@ public class MainActivity extends AppCompatActivity
         if (idao.selectAll() != null) {
             for (Item item : idao.selectAll()) {
                 idao.delete(item.get_item_id());
+            }
+        }
+
+        if (fdao.selectAll() != null) {
+            for (Favorites fav : fdao.selectAll()) {
+                fdao.delete(fav.getId());
             }
         }
 
@@ -170,7 +178,7 @@ public class MainActivity extends AppCompatActivity
         fragmentClass = null;
 
         if (id == R.id.nav_camera) {
-            return false;
+            fragmentClass = FavoritesFragment.class;
         }
         else if (id == R.id.nav_gallery) {
             fragmentClass = PhotosFragment.class;
