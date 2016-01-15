@@ -43,6 +43,7 @@ public class Item implements Parcelable {
         _theme_id = in.readLong();
         _longitude = in.readDouble();
         _latitude = in.readDouble();
+        _item_id = in.readLong();
     }
 
     public long get_item_id() {
@@ -114,6 +115,7 @@ public class Item implements Parcelable {
         dest.writeDouble(_latitude);
         dest.writeDouble(_longitude);
         dest.writeLong(_theme_id);
+        dest.writeLong(_item_id);
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {

@@ -24,12 +24,13 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener, GeoFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PhotosFragment.OnFragmentInteractionListener, GeoFragment.OnFragmentInteractionListener,FavoritesFragment.OnFragmentInteractionListener {
 
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
     ItemDAO idao;
     ThemeDAO tdao;
+    FavoritesDAO fdao;
     private int countPressed;
 
     @Override
@@ -44,23 +45,30 @@ public class MainActivity extends AppCompatActivity
         // On ouvre la connexion à la bdd
         SQLiteDatabase db = sqlInstance.open();
 
-
-
         // on créé une instance d'ItemDAO si on veut gérer des items (add/delete/edit/select/selectAll...)
         // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
         idao = new ItemDAO(getApplicationContext(), db);
         tdao = new ThemeDAO(getApplicationContext(), db);
-        ArrayList<Theme> th= new ArrayList<>();
-        th.addAll(tdao.selectAll());
-        for (Theme theme : th) {
-            tdao.delete(theme.getId());
+
+        fdao = new FavoritesDAO(getApplicationContext(), db);
+
+        if (tdao.selectAll() != null) {
+            for (Theme theme : tdao.selectAll()) {
+                tdao.delete(theme.getId());
+            }
+
         }
-        for (Item item : idao.selectAll()) {
-            idao.delete(item.get_item_id());
+        if (idao.selectAll() != null) {
+            for (Item item : idao.selectAll()) {
+                idao.delete(item.get_item_id());
+            }
         }
 
-
-
+        if (fdao.selectAll() != null) {
+            for (Favorites fav : fdao.selectAll()) {
+                fdao.deleteFav(fav.getId());
+            }
+        }
 
         Theme t = new Theme("Tableau", R.drawable.tableau1, "Tout les tableau rien que pour vous");
         Theme theme1 = new Theme("Sculture", R.drawable.sculpture_bronze_art_deco, "Tout les tableau rien que pour vous");
@@ -70,10 +78,10 @@ public class MainActivity extends AppCompatActivity
 
         for (Theme theme : tdao.selectAll()) {
 
-            Item i = new Item(R.drawable.tableau1, "Super tableau 1", "Tableau 1", 48.860294, 2.337460, theme.getId());
-            Item it = new Item(R.drawable.tableau2, "Super tableau 2", "Tableau 2", 48.860050, 2.339550, theme.getId());
-            Item ite = new Item(R.drawable.tableau3, "Super tableau 3", "Tableau 3", 48.85960461831141, 2.338762879371643, theme.getId());
-            Item item = new Item(R.drawable.tableau4, "Super tableau 3", "Tableau 4", 48.86116453787939, 2.3379796743392944, theme.getId());
+            Item i = new Item(R.drawable.tableau1, "Super tableau 1", "Tableau 1", 114.2, 47.5, theme.getId());
+            Item it = new Item(R.drawable.tableau2, "Super tableau 2", "Tableau 2", 114.2, 47.5, theme.getId());
+            Item ite = new Item(R.drawable.tableau3, "Super tableau 3", "Tableau 3", 114.2, 47.5, theme.getId());
+            Item item = new Item(R.drawable.tableau4, "Super tableau 3", "Tableau 4", 114.2, 47.5, theme.getId());
 
             idao.add(i);
             idao.add(it);
@@ -81,7 +89,6 @@ public class MainActivity extends AppCompatActivity
             idao.add(item);
             break;
         }
-
 
         db.close();
 
@@ -173,7 +180,7 @@ public class MainActivity extends AppCompatActivity
         fragmentClass = null;
 
         if (id == R.id.nav_camera) {
-            return false;
+            fragmentClass = FavoritesFragment.class;
         }
         else if (id == R.id.nav_gallery) {
             fragmentClass = PhotosFragment.class;

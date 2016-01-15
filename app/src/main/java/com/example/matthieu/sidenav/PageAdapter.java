@@ -2,6 +2,7 @@ package com.example.matthieu.sidenav;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +11,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PageAdapter extends android.support.v4.view.PagerAdapter {
     private LayoutInflater mInflater;
     private Context c;
     private Intent i;
-    private List<Item> items;
+    private ArrayList<Item> items;
 
-    public PageAdapter(Context c, final List<Item> items) {
+    public PageAdapter(Context c, final ArrayList<Item> items) {
 
         mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.items = items;
@@ -32,7 +36,7 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(View collection, int position) {
+    public Object instantiateItem(View collection, final int position) {
 
         View rowView = mInflater.inflate(R.layout.pager_cellule, null);
 
@@ -44,7 +48,26 @@ public class PageAdapter extends android.support.v4.view.PagerAdapter {
         ibLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BaseDAO sqlite = new BaseDAO(c);
+                SQLiteDatabase db = sqlite.open();
 
+                Item itemdb = items.get(position);
+                // id de l'item selectionné
+                long item_id = itemdb.get_item_id();
+
+                FavoritesDAO fdao = new FavoritesDAO(c, db);
+
+                Favorites favInDb = fdao.select(item_id);
+
+                if (favInDb != null) {
+                    fdao.delete(item_id);
+                    Toast.makeText(c,"L'oeuvre " + itemdb.getName() + " a bien été retiré des favoris", Toast.LENGTH_LONG ).show();
+                }
+                else {
+                    Favorites f = new Favorites(item_id);
+                    fdao.add(f);
+                    Toast.makeText(c, "L'oeuvre " + itemdb.getName() + " a bien été ajouté aux favoris", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
