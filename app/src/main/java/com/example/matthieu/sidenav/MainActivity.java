@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
     ItemDAO idao;
+    ThemeDAO tdao;
     private int countPressed;
 
     @Override
@@ -48,9 +49,10 @@ public class MainActivity extends AppCompatActivity
         // on créé une instance d'ItemDAO si on veut gérer des items (add/delete/edit/select/selectAll...)
         // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
         idao = new ItemDAO(getApplicationContext(), db);
-        ThemeDAO tdao = new ThemeDAO(getApplicationContext(), db);
-
-        for (Theme theme : tdao.selectAll()) {
+        tdao = new ThemeDAO(getApplicationContext(), db);
+        ArrayList<Theme> th= new ArrayList<>();
+        th.addAll(tdao.selectAll());
+        for (Theme theme : th) {
             tdao.delete(theme.getId());
         }
         for (Item item : idao.selectAll()) {
