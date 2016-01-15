@@ -36,6 +36,10 @@ public class FavoritesDAO extends BaseDAO{
     }
 
     public void delete(long id) {
+        mDB.delete(FAV_TABLE_NAME, FAV_ITEM_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void deleteFav(long id) {
         mDB.delete(FAV_TABLE_NAME, FAV_KEY + " = ?", new String[]{String.valueOf(id)});
     }
 
@@ -50,7 +54,7 @@ public class FavoritesDAO extends BaseDAO{
                 "Select " + FAV_KEY + ", "
                         + FAV_ITEM_ID + " from "
                         + FAV_TABLE_NAME + " where "
-                        + FAV_KEY + " = ?", new String[]{String.valueOf(id)});
+                        + FAV_ITEM_ID + " = ?", new String[]{String.valueOf(id)});
 
         Favorites f = null;
         if (c != null)
