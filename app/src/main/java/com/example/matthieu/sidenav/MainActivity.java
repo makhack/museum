@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     ViewFlipper vf;
     private ArrayList<Theme> themeList;
     ItemDAO idao;
+    ThemeDAO tdao;
     private int countPressed;
 
     @Override
@@ -46,13 +47,17 @@ public class MainActivity extends AppCompatActivity
         // on créé une instance d'ItemDAO si on veut gérer des items (add/delete/edit/select/selectAll...)
         // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
         idao = new ItemDAO(getApplicationContext(), db);
-        ThemeDAO tdao = new ThemeDAO(getApplicationContext(), db);
+        tdao = new ThemeDAO(getApplicationContext(), db);
 
-        for (Theme theme : tdao.selectAll()) {
-            tdao.delete(theme.getId());
+        if (tdao.selectAll() != null) {
+            for (Theme theme : tdao.selectAll()) {
+                tdao.delete(theme.getId());
+            }
         }
-        for (Item item : idao.selectAll()) {
-            idao.delete(item.get_item_id());
+        if (idao.selectAll() != null) {
+            for (Item item : idao.selectAll()) {
+                idao.delete(item.get_item_id());
+            }
         }
 
         Theme t = new Theme("Tableau", R.drawable.tableau1, "Tout les tableau rien que pour vous");
