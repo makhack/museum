@@ -49,12 +49,14 @@ public class MainActivity extends AppCompatActivity
         // (FavoritesDAO pour les favorites, ThemeDAO pour les themes)
         idao = new ItemDAO(getApplicationContext(), db);
         tdao = new ThemeDAO(getApplicationContext(), db);
+
         fdao = new FavoritesDAO(getApplicationContext(), db);
 
         if (tdao.selectAll() != null) {
             for (Theme theme : tdao.selectAll()) {
                 tdao.delete(theme.getId());
             }
+
         }
         if (idao.selectAll() != null) {
             for (Item item : idao.selectAll()) {
@@ -76,11 +78,11 @@ public class MainActivity extends AppCompatActivity
 
         for (Theme theme : tdao.selectAll()) {
 
-            Item i = new Item(R.drawable.tableau1, "Super tableau 1", "Tableau 1", 114.2, 47.5, theme.getId());
-            Item it = new Item(R.drawable.tableau2, "Super tableau 2", "Tableau 2", 114.2, 47.5, theme.getId());
-            Item ite = new Item(R.drawable.tableau3, "Super tableau 3", "Tableau 3", 114.2, 47.5, theme.getId());
-            Item item = new Item(R.drawable.tableau4, "Super tableau 3", "Tableau 4", 114.2, 47.5, theme.getId());
-
+            Item i = new Item(R.drawable.tableau1, "Super tableau 1", "Tableau 1", 48.860294, 2.337460, theme.getId());
+            Item it = new Item(R.drawable.tableau2, "Super tableau 2", "Tableau 2", 48.860050, 2.339550, theme.getId());
+            Item ite = new Item(R.drawable.tableau3, "Super tableau 3", "Tableau 3", 48.85960461831141, 2.338762879371643, theme.getId());
+            Item item = new Item(R.drawable.tableau4, "Super tableau 3", "Tableau 4", 48.86116453787939, 2.3379796743392944, theme.getId());
+            
             idao.add(i);
             idao.add(it);
             idao.add(ite);
